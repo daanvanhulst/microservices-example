@@ -1,0 +1,35 @@
+version: '2'
+services:
+  bookmark:
+    build: ./bookmark/source
+    ports:
+    - "3100:3100"
+    depends_on:
+    - rabbitmq
+    - bookmark-db
+    links:
+    - rabbitmq
+    - bookmark-db
+  bookmark-db:
+    image: mongo
+    ports:
+    - 28001:27017
+  recommendation:
+    build: ./recommendation/source
+    ports:
+    - "3200:3200"
+    depends_on:
+    - rabbitmq
+    - recommendation-db
+    links:
+    - rabbitmq
+    - recommendation-db
+  recommendation-db:
+    image: mongo
+    ports:
+    - 28002:27017
+  rabbitmq:
+    image: rabbitmq
+    ports:
+    - "5672:5672"
+    - "15672:15672"
