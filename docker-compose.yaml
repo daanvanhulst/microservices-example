@@ -1,35 +1,48 @@
 version: '2'
 services:
+  proxy:
+    build: ./proxy
+    links:
+      - bbm-web
+      - bookmark
+      - recommendation
+    ports:
+      - 80:80
+      - 443:443
+  bbm-web:
+    build: ./bbm-web
+    expose:
+      - "80"
   bookmark:
     build: ./bookmark/source
-    ports:
-    - "3100:3100"
+    expose:
+      - "80"
     depends_on:
-    - rabbitmq
-    - bookmark-db
+      - rabbitmq
+      - bookmark-db
     links:
-    - rabbitmq
-    - bookmark-db
+      - rabbitmq
+      - bookmark-db
   bookmark-db:
     image: mongo
     ports:
-    - 28001:27017
+      - 28001:27017
   recommendation:
     build: ./recommendation/source
-    ports:
-    - "3200:3200"
+    expose:
+      - "80"
     depends_on:
-    - rabbitmq
-    - recommendation-db
+      - rabbitmq
+      - recommendation-db
     links:
-    - rabbitmq
-    - recommendation-db
+      - rabbitmq
+      - recommendation-db
   recommendation-db:
     image: mongo
     ports:
-    - 28002:27017
+      - 28002:27017
   rabbitmq:
     image: rabbitmq
     ports:
-    - "5672:5672"
-    - "15672:15672"
+      - "5672:5672"
+      - "15672:15672"

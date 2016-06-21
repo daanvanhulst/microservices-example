@@ -5,7 +5,7 @@ const router = express.Router();
 
 const recommendationService = require('./recommendation.service');
 
-router.get('/recommendations', (req, res) => {
+router.get('/recommendation', (req, res) => {
   recommendationService.getRecommendations()
     .then((response) => {
       res.send(response);

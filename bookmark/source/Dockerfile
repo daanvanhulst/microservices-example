@@ -13,7 +13,7 @@ RUN npm install
 COPY . /usr/src/app
 
 # EXPOSE instruction to have it mapped by the docker daemon
-EXPOSE 3100
+EXPOSE 80
 
 # Run node server.js to start server
 CMD [ "npm", "start" ]
