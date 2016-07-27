@@ -6,6 +6,7 @@ const httpProxy = require('http-proxy');
 const proxy = httpProxy.createProxyServer({});
 
 router.all(['/bookmark', '/bookmark*'], (req, res) => {
+console.log("Authorized so calling /bookmark");
   proxy.web(req, res, { target: 'http://192.168.99.100:3100' });
 });
 

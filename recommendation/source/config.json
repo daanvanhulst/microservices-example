@@ -1,6 +1,6 @@
 {
   "application": {
-    "port": 80,
+    "port": 3200,
     "local": "true"
   },
   "logging": {

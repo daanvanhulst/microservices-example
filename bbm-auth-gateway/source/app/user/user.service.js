@@ -3,25 +3,98 @@
 const userRepository = require('./user.mongo.repository');
 const User = require('./user.model');
 
-exports.getUser = (username) => {
-  console.log('Callin getUser in user service');
+exports.findUserByFacebookId = (userId) => {
   return new Promise((resolve, reject) => {
-    userRepository.getUser(username)
+    userRepository.findUserByFacebookId(userId)
       .then((response) => {
-        console.log("Got user");
-        console.log(response);
-        const user = new User(response);
-        if(user) {
-          resolve(user);
-        } else {
-          reject();
+        let user = null;
+        if(response) { 
+          user = new User(response); 
         }
+        resolve(user);
       }, (error) => {
-        console.log("Failed to get user %s", error);
         reject(error);
       })
       .catch((response) => {
         reject(response);
       });
   });
+};
+
+exports.findUserByGoogleId = (userId) => {
+  return new Promise((resolve, reject) => {
+    userRepository.findUserByGoogleId(userId)
+      .then((response) => {
+        let user = null;
+        if(response) { 
+          user = new User(response);
+        }
+        resolve(user);
+      }, (error) => {
+        reject(error);
+      })
+      .catch((response) => {
+        reject(response);
+      });
+  });
+};
+
+exports.findUserByTwitterId = (userId) => {
+  return new Promise((resolve, reject) => {
+    userRepository.findUserByTwitterId(userId)
+      .then((response) => {
+
+        let user = null;
+        if(response) { 
+          user = new User(response);
+        }
+        resolve(user);
+      }, (error) => {
+        reject(error);
+      })
+      .catch((response) => {
+        reject(response);
+      });
+  });
+};
+
+exports.findUserById = (userId) => {
+  return new Promise((resolve, reject) => {
+    userRepository.findUserById(userId)
+      .then((response) => {
+        let user = null;
+        if(response) { 
+          user = new User(response); 
+        }
+        resolve(user);
+      }, (error) => {
+        reject(error);
+      })
+      .catch((response) => {
+        reject(response);
+      });
+  });
+};
+
+
+exports.findUserByToken = (token) => {
+  return new Promise((resolve, reject) => {
+    userRepository.findUserByToken(token)
+      .then((response) => {
+        let user = null;
+        if(response) { 
+          user = new User(response); 
+        }
+        resolve(user);
+      }, (error) => {
+        reject(error);
+      })
+      .catch((response) => {
+        reject(response);
+      });
+  });
+};
+
+exports.addOrUpdateUser = (addUser) => {
+  return userRepository.addOrUpdateUser(addUser);
 };

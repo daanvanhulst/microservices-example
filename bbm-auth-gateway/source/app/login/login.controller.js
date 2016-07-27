@@ -5,22 +5,15 @@ const router = express.Router();
 
 const loginService = require('./login.service');
 
-router.post('/login', (req, res) => {
-  const user = req.body;
+// app/routes.js
 
-  loginService.loginUser(user)
-    .then((token) => {
-        res.writeHeader(200, {
-          'Content-Length': token.length,
-          'Content-Type': "text/plain"
-      });
-      res.write(token);
-      res.end(); 
-    })
-    .catch((response) => {
-      res.status(response.statusCode).send(response.error);
-    });
-});
+module.exports = function(app, passport) {
+  // route for logging out
+  app.get('/logout', function(req, res) {
+      req.logout();
+      res.redirect('/');
+  });
 
+};
 module.exports = router;
 

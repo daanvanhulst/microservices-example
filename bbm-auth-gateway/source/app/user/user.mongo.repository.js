@@ -1,53 +1,77 @@
 'use strict';
 
-const mongoose = require('mongoose'),
-    Schema = mongoose.Schema,
-    bcrypt = require('bcrypt'),
-    SALT_WORK_FACTOR = 10;
-
+const mongoose = require('mongoose');
 mongoose.connect('mongodb://192.168.99.100:28003/User');
 
-const UserSchema = new Schema({
-    username: { type: String, required: true, index: { unique: true } },
-    password: { type: String, required: true }
+const userSchema = mongoose.Schema({
+  facebook         : {
+    id           : String,
+    token        : String,
+    email        : String,
+    name         : String
+  },
+  twitter          : {
+    id           : String,
+    token        : String,
+    displayName  : String,
+    username     : String
+  },
+  google           : {
+    id           : String,
+    token        : String,
+    email        : String,
+    name         : String
+  }
 });
-const User = mongoose.model('User', UserSchema);
+var UserDB = mongoose.model('User', userSchema);
 
-UserSchema.pre('save', function(next) {
-    var user = this;
-
-  // only hash the password if it has been modified (or is new)
-  if (!user.isModified('password')) return next();
-
-  // generate a salt
-  bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
-      if (err) return next(err);
-
-      // hash the password using our new salt
-      bcrypt.hash(user.password, salt, function(err, hash) {
-          if (err) return next(err);
-
-          // override the cleartext password with the hashed one
-          user.password = hash;
-          next();
-      });
-  });
-});
-
-// create a user a new user
-var testUser = new User({
-    username: 'daanvanhulst',
-    password: 'supersafe'
-});
-
-// save user to database
-testUser.save(() => {
-    console.log("added user");
-    console.log(testUser);
-});
-
-exports.getUser = (username) => {
-    console.log('Callin getUser in repo %s', username);
-// fetch user and test password verification
-  return User.findOne({ username: username });
+exports.findUserById = (userId) => {
+  return UserDB.findOne({ '_id': userId });
 };
+
+exports.findUserByToken = (token) => {
+  return UserDB.findOne({ $or:[ {'facebook.token': token},  {'twitter.token': token}, {'google.token': token} ]});
+};
+
+exports.findUserByFacebookId = (userId) => {
+  return UserDB.findOne({ 'facebook.id': userId });
+};
+
+exports.findUserByGoogleId = (userId) => {
+  return UserDB.findOne({ 'google.id': userId });
+};
+
+exports.findUserByTwitterId = (userId) => {
+  return UserDB.findOne({ 'twitter.id': userId });
+};
+
+exports.addOrUpdateUser = (userData) => {
+  return new Promise((resolve, reject) => {
+    this.findUserById(userData._id)
+    .then((dbUser) => {
+      if(!dbUser) {
+        dbUser = new UserDB();
+      }
+
+      if (userData.facebook) {
+        dbUser.facebook  = userData.facebook;
+      }
+      if (userData.google)   {
+        dbUser.google    = userData.google;
+      }
+      if (userData.twitter)  {
+        dbUser.twitter   = userData.twitter;
+      }
+
+      dbUser.save()
+      .then((response) => {
+        resolve(response)
+      }, (error) => {
+        reject(error);
+      });
+    }, 
+    (error) => {
+      reject(error);
+    });
+  });
+}

@@ -4,7 +4,7 @@
     <md-list-item class="md-3-line" ng-repeat="bookmark in vm.bookmarks" ng-click="null">
       <img ng-src="" class="md-avatar" alt="{{ bookmark.name }}" />
       <div class="md-list-item-text" layout="column">
-        <h2>{{ bookmark.name }}</h2>
+        <pre>{{ bookmark }}</pre>
       </div>
     </md-list-item>
   </md-list>

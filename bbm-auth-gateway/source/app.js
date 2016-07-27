@@ -20,6 +20,16 @@ const utils = require('./middleware/utils');
 utils.register(app);
 winston.info('app: utils loaded');
 
+winston.info('app: session loading');
+const session = require('./middleware/session');
+session.register(app);
+winston.info('app: session loaded');
+
+winston.info('app: auth loading');
+const auth = require('./middleware/auth');
+auth.register(app);
+winston.info('app: auth loaded');
+
 winston.info('app: routes loading');
 const routes = require('./middleware/routes');
 routes.register(app);

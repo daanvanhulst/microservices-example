@@ -1,7 +1,6 @@
 export default class CommonConstants {
   constructor() {
     // Back-end Api Endpoint
-    this.baseUrl = 'https://bookmark';
-    
+    this.baseUrl = 'http://bbm-auth-gateway.com';
   }
 }

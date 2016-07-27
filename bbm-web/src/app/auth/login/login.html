@@ -1,0 +1,9 @@
+
+<div layout="column" flex id="content" role="main">
+  <md-content layout-padding>
+    <p>Login With</p>
+    <md-button class="md-raised" ng-click="vm.openSocialLoginWindow(vm.baseUrl + '/auth/facebook?redirect=' + vm.redirectUrl)">Facebook</md-button>
+    <md-button class="md-raised" ng-click="vm.openSocialLoginWindow(vm.baseUrl + '/auth/twitter?redirect=' + vm.redirectUrl)">Twitter</md-button>
+    <md-button class="md-raised" ng-click="vm.openSocialLoginWindow(vm.baseUrl + '/auth/google?redirect=' + vm.redirectUrl)">Google</md-button>
+  </md-content>
+</div>

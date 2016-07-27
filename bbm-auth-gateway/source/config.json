@@ -1,6 +1,7 @@
 {
   "application": {
-    "port": 80,
+    "baseUrl": "bbm-auth-gateway.com",
+    "port": 8002,
     "local": "true"
   },
   "logging": {

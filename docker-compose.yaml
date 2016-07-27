@@ -3,20 +3,33 @@ services:
   proxy:
     build: ./proxy
     links:
-      - bbm-web
-      - bookmark
-      - recommendation
+      - bbm-auth-gateway
     ports:
       - 80:80
       - 443:443
   bbm-web:
     build: ./bbm-web
-    expose:
-      - "80"
+    ports:
+      - "3000:3000"
+    links:
+      - "bbm-auth-gateway"
+  bbm-auth-gateway:
+    build: ./bbm-auth-gateway/source
+    ports:
+      - 8002:8002
+    depends_on:
+      - auth-db
+    links:
+      - bookmark
+      - recommendation
+  auth-db:
+    image: mongo
+    ports:
+      - 28003:27017
   bookmark:
     build: ./bookmark/source
-    expose:
-      - "80"
+    ports:
+      - "3100:3100"
     depends_on:
       - rabbitmq
       - bookmark-db
@@ -29,8 +42,8 @@ services:
       - 28001:27017
   recommendation:
     build: ./recommendation/source
-    expose:
-      - "80"
+    ports:
+      - "3200:3200"
     depends_on:
       - rabbitmq
       - recommendation-db

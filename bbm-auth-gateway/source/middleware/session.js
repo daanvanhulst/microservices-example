@@ -1,6 +1,7 @@
 'use strict';
 
 const session = require('express-session');
+const flash   = require('connect-flash');
 
 exports.register = (app) => {
   app.use(session({
@@ -8,4 +9,6 @@ exports.register = (app) => {
     resave: true,
     saveUninitialized: true
   }));
+  
+  app.use(flash());
 };
